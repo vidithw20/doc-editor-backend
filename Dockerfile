@@ -1,21 +1,28 @@
 # ---------- BASE ----------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
-# 🔥 Syncfusion required fix (VERY IMPORTANT)
+# 🔥 CRITICAL for Pdfium
 RUN ln -s /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libdl.so
 
-# 🔥 System.Drawing + rendering dependencies
+# 🔥 Native dependencies (FINAL SET)
 RUN apt-get update && apt-get install -y \
     libgdiplus \
     libc6-dev \
     libx11-dev \
+    libfontconfig1 \
+    libfreetype6 \
+    libpng16-16 \
+    libjpeg62-turbo \
+    libharfbuzz0b \
     && rm -rf /var/lib/apt/lists/*
 
-# 🔥 Fix for System.Drawing on Linux
+# 🔥 Fix System.Drawing
 RUN ln -s libgdiplus.so gdiplus.dll
 
 WORKDIR /app
 EXPOSE 10000
+
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
