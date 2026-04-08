@@ -38,7 +38,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# 🔥 Render dynamic port support
-ENV ASPNETCORE_URLS=http://+:10000
-
 ENTRYPOINT ["dotnet", "EJ2APIServices_NET8.dll"]
