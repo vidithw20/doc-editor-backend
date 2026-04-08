@@ -1,7 +1,7 @@
 # ---------- BASE RUNTIME ----------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 10000
 
 # ---------- BUILD ----------
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -27,6 +27,6 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # Render requires dynamic port
-ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_URLS=http://+:10000
 
 ENTRYPOINT ["dotnet", "EJ2APIServices_NET8.dll"]

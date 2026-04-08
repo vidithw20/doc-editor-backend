@@ -13,7 +13,7 @@ namespace EJ2APIServices
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 
             return WebHost.CreateDefaultBuilder(args)
                 .UseUrls($"http://*:{port}")
