@@ -26,7 +26,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("Load")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult Load([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
@@ -65,7 +64,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("RenderPdfPages")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult RenderPdfPages([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
@@ -75,7 +73,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("RenderPdfTexts")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult RenderPdfTexts([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
@@ -85,7 +82,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("RenderThumbnailImages")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult RenderThumbnailImages([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
@@ -95,7 +91,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("RenderAnnotationComments")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult RenderAnnotationComments([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
@@ -105,7 +100,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("Bookmarks")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult Bookmarks([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
@@ -115,7 +109,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("Download")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult Download([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
@@ -125,7 +118,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("PrintImages")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult PrintImages([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
@@ -135,7 +127,6 @@ namespace EJ2APIServices_NET8.Controllers
         }
 
         [HttpPost("Unload")]
-        [EnableCors("AllowAllOrigins")]
         public IActionResult Unload([FromBody] JsonElement jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);

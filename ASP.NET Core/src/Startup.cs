@@ -94,12 +94,14 @@ namespace EJ2APIServices
             }
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseCors("MyPolicy");
+
             app.UseAuthorization();
-            app.UseCors(MyAllowSpecificOrigins);
-            app.UseResponseCompression();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers().RequireCors("MyPolicy");
+                endpoints.MapControllers();
             });
         }
     }
