@@ -1,0 +1,198 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\controllers\\pdfviewercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\controllers\\pdfviewercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\nuget.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\nuget.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\controllers\\documenteditorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\controllers\\documenteditorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\ej2apiservices_net8.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\ej2apiservices_net8.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\models\\eej2serviceej2webservicessrcapp_datadiagrammdfcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\models\\eej2serviceej2webservicessrcapp_datadiagrammdfcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\models\\diagramdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\models\\diagramdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|d:\\projects\\codeverse labs\\contract oven\\ej2-document-editor-web-services\\asp.net core\\src\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2F1360E-DF8C-4AD2-A8CC-942A180D6762}|src\\EJ2APIServices_NET8.csproj|solutionrelative:src\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "web.config",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\web.config",
+              "RelativeDocumentMoniker": "src\\web.config",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\web.config",
+              "RelativeToolTip": "src\\web.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-04-08T09:36:25.304Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NuGet.Config",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\NuGet.Config",
+              "RelativeDocumentMoniker": "src\\NuGet.Config",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\NuGet.Config",
+              "RelativeToolTip": "src\\NuGet.Config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-04-08T09:36:20.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Startup.cs",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Startup.cs",
+              "RelativeDocumentMoniker": "src\\Startup.cs",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Startup.cs",
+              "RelativeToolTip": "src\\Startup.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAgwBcAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T09:35:08.44Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Program.cs",
+              "RelativeDocumentMoniker": "src\\Program.cs",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Program.cs",
+              "RelativeToolTip": "src\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T09:35:01.18Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PdfViewerController.cs",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Controllers\\PdfViewerController.cs",
+              "RelativeDocumentMoniker": "src\\Controllers\\PdfViewerController.cs",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Controllers\\PdfViewerController.cs*",
+              "RelativeToolTip": "src\\Controllers\\PdfViewerController.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAL8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T09:21:26.877Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "EJ2APIServices_NET8.csproj",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\EJ2APIServices_NET8.csproj",
+              "RelativeDocumentMoniker": "src\\EJ2APIServices_NET8.csproj",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\EJ2APIServices_NET8.csproj",
+              "RelativeToolTip": "src\\EJ2APIServices_NET8.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-04-08T07:52:58.255Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DocumentEditorController.cs",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Controllers\\DocumentEditorController.cs",
+              "RelativeDocumentMoniker": "src\\Controllers\\DocumentEditorController.cs",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Controllers\\DocumentEditorController.cs",
+              "RelativeToolTip": "src\\Controllers\\DocumentEditorController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T07:51:49.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "TestController.cs",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Controllers\\TestController.cs",
+              "RelativeDocumentMoniker": "src\\Controllers\\TestController.cs",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Controllers\\TestController.cs",
+              "RelativeToolTip": "src\\Controllers\\TestController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T07:52:20.262Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DiagramData.cs",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Models\\DiagramData.cs",
+              "RelativeDocumentMoniker": "src\\Models\\DiagramData.cs",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Models\\DiagramData.cs",
+              "RelativeToolTip": "src\\Models\\DiagramData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T07:53:35.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EEJ2SERVICEEJ2WEBSERVICESSRCAPP_DATADIAGRAMMDFContext.cs",
+              "DocumentMoniker": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Models\\EEJ2SERVICEEJ2WEBSERVICESSRCAPP_DATADIAGRAMMDFContext.cs",
+              "RelativeDocumentMoniker": "src\\Models\\EEJ2SERVICEEJ2WEBSERVICESSRCAPP_DATADIAGRAMMDFContext.cs",
+              "ToolTip": "D:\\Projects\\Codeverse Labs\\Contract Oven\\EJ2-Document-Editor-Web-Services\\ASP.NET Core\\src\\Models\\EEJ2SERVICEEJ2WEBSERVICESSRCAPP_DATADIAGRAMMDFContext.cs",
+              "RelativeToolTip": "src\\Models\\EEJ2SERVICEEJ2WEBSERVICESSRCAPP_DATADIAGRAMMDFContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T07:53:38.047Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
