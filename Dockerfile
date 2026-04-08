@@ -4,8 +4,15 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
     libgdiplus \
+    libc6 \
     libfontconfig1 \
     libfreetype6 \
+    libjpeg62-turbo \
+    libpng16-16 \
+    libx11-6 \
+    libxrender1 \
+    libxcb1 \
+    libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
