@@ -2,21 +2,12 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
-# 🔥 REQUIRED for Syncfusion PDF (VERY IMPORTANT)
 RUN apt-get update && apt-get install -y \
     libgdiplus \
-    libc6-dev \
-    libx11-dev \
-    libxrender-dev \
     libfontconfig1 \
     libfreetype6 \
-    libjpeg62-turbo \
-    libpng16-16 \
-    libtiff5 \
-    libopenjp2-7 \
     && rm -rf /var/lib/apt/lists/*
 
-# 🔥 Fix globalization issues (sometimes needed)
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 EXPOSE 10000
