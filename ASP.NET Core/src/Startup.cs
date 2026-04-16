@@ -86,8 +86,12 @@ namespace EJ2APIServices
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //Register Syncfusion license
-            string licenseKey = string.Empty;
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+            string licenseKey = Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
+
+            if (!string.IsNullOrEmpty(licenseKey))
+            {
+                Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+            }
 
             if (env.IsDevelopment())
             {
