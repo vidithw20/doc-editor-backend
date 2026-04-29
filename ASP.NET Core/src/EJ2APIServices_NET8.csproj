@@ -32,6 +32,7 @@
     <PackageReference Include="SkiaSharp" Version="3.119.2" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.2" />
     <PackageReference Include="Syncfusion.Compression.Net.Core" Version="*" />
+    <PackageReference Include="Syncfusion.DocIORenderer.Net.Core" Version="33.2.4" />
     <PackageReference Include="Syncfusion.EJ2.PdfViewer.AspNet.Core" Version="33.1.47" />
     <PackageReference Include="Syncfusion.OfficeChart.Net.Core" Version="*" />
     <PackageReference Include="Syncfusion.EJ2.WordEditor.AspNet.Core" Version="*" />

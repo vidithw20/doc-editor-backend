@@ -14,8 +14,19 @@ using Syncfusion.EJ2.SpellChecker;
 using EJ2APIServices;
 using SkiaSharp;
 using BitMiracle.LibTiff.Classic;
+using Syncfusion.DocIORenderer;
+using Syncfusion.Pdf;
+using Syncfusion.DocIO;
+using DocIOWordDocument = Syncfusion.DocIO.DLS.WordDocument;
+using Ej2WordDocument = Syncfusion.EJ2.DocumentEditor.WordDocument;
+using Ej2FormatType = Syncfusion.EJ2.DocumentEditor.FormatType;
 
-namespace SyncfusionDocument.Controllers
+using DocIOFormatType = Syncfusion.DocIO.FormatType;
+
+using Syncfusion.DocIORenderer;
+using Syncfusion.Pdf;
+
+namespace EJ2APIServices.Controllers
 {
     [Route("api/[controller]")]
     public class DocumentEditorController : Controller
@@ -54,6 +65,58 @@ namespace SyncfusionDocument.Controllers
             document.Dispose();
             return json;
         }
+
+        [AcceptVerbs("Post")]
+        [HttpPost]
+        [Route("ConvertDocxToPdf")]
+        public IActionResult ConvertDocxToPdf(IFormCollection data)
+        {
+            if (data == null || data.Files == null || data.Files.Count == 0)
+            {
+                return BadRequest("No DOCX file uploaded.");
+            }
+
+            IFormFile file = data.Files[0];
+
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Uploaded file is empty.");
+            }
+
+            MemoryStream inputStream = new MemoryStream();
+
+            try
+            {
+                file.CopyTo(inputStream);
+                inputStream.Position = 0;
+
+                using DocIOWordDocument document = new DocIOWordDocument(
+                    inputStream,
+                    Syncfusion.DocIO.FormatType.Docx
+                );
+
+                using DocIORenderer renderer = new DocIORenderer();
+
+                using PdfDocument pdfDocument = renderer.ConvertToPDF(document);
+
+                MemoryStream outputStream = new MemoryStream();
+                pdfDocument.Save(outputStream);
+                outputStream.Position = 0;
+
+                return File(
+                    outputStream,
+                    "application/pdf",
+                    "Agreement.pdf"
+                );
+            }
+            catch (Exception ex)
+            {
+                inputStream.Dispose();
+                return BadRequest($"DOCX to PDF conversion failed: {ex.Message}");
+            }
+        }
+
+
 
         //Converts Metafile to raster image.
         private static void OnMetafileImageParsed(object sender, MetafileImageParsedEventArgs args)
@@ -361,7 +424,7 @@ namespace SyncfusionDocument.Controllers
             Stream stream = System.IO.File.OpenRead("App_Data/GettingStarted.docx");
             stream.Position = 0;
 
-            WordDocument document = WordDocument.Load(stream, FormatType.Docx);
+            WordDocument document = WordDocument.Load(stream, Ej2FormatType.Docx);
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(document);
             document.Dispose();
             return json;
@@ -390,7 +453,7 @@ namespace SyncfusionDocument.Controllers
                         stream.Position = 0;
                 }
             }
-            WordDocument document = WordDocument.Load(stream, FormatType.Docx);
+            WordDocument document = WordDocument.Load(stream, Ej2FormatType.Docx);
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(document);
             document.Dispose();
             return json;
@@ -409,7 +472,7 @@ namespace SyncfusionDocument.Controllers
             else { return null; }
         }
 
-        internal static FormatType GetFormatType(string format)
+        internal static Ej2FormatType GetFormatType(string format)
         {
             if (string.IsNullOrEmpty(format))
                 throw new NotSupportedException("EJ2 DocumentEditor does not support this file format.");
@@ -419,18 +482,18 @@ namespace SyncfusionDocument.Controllers
                 case ".docx":
                 case ".docm":
                 case ".dotm":
-                    return FormatType.Docx;
+                    return Ej2FormatType.Docx;
                 case ".dot":
                 case ".doc":
-                    return FormatType.Doc;
+                    return Ej2FormatType.Doc;
                 case ".rtf":
-                    return FormatType.Rtf;
+                    return Ej2FormatType.Rtf;
                 case ".txt":
-                    return FormatType.Txt;
+                    return Ej2FormatType.Txt;
                 case ".xml":
-                    return FormatType.WordML;
+                    return Ej2FormatType.WordML;
                 case ".html":
-                    return FormatType.Html;
+                    return Ej2FormatType.Html;
                 default:
                     throw new NotSupportedException("EJ2 DocumentEditor does not support this file format.");
             }

@@ -102,7 +102,7 @@ namespace EJ2APIServices
             {
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseCors("MyPolicy");

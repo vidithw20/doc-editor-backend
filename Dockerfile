@@ -1,10 +1,7 @@
-# ---------- BASE ----------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
-# 🔥 CRITICAL for Pdfium
 RUN ln -s /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libdl.so
 
-# 🔥 Native dependencies (FINAL SET)
 RUN apt-get update && apt-get install -y \
     libgdiplus \
     libc6-dev \
@@ -14,9 +11,10 @@ RUN apt-get update && apt-get install -y \
     libpng16-16 \
     libjpeg62-turbo \
     libharfbuzz0b \
+    fonts-dejavu-core \
+    fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
-# 🔥 Fix System.Drawing
 RUN ln -s libgdiplus.so gdiplus.dll
 
 WORKDIR /app
@@ -27,29 +25,23 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 
-# ---------- BUILD ----------
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /source
 
-# copy csproj first
 COPY ["ASP.NET Core/src/EJ2APIServices_NET8.csproj", "ASP.NET Core/src/"]
 RUN dotnet restore "ASP.NET Core/src/EJ2APIServices_NET8.csproj"
 
-# copy everything
 COPY . .
 
 WORKDIR "/source/ASP.NET Core/src"
 
-# 🔥 IMPORTANT: specify project file
 RUN dotnet build "EJ2APIServices_NET8.csproj" -c Release -o /app
 
 
-# ---------- PUBLISH ----------
 FROM build AS publish
 RUN dotnet publish "EJ2APIServices_NET8.csproj" -c Release -o /app
 
 
-# ---------- FINAL ----------
 FROM base AS final
 WORKDIR /app
 
