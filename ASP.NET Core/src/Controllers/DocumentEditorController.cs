@@ -1,40 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
-using System.IO;
-using Microsoft.AspNetCore.Cors;
+﻿using BitMiracle.LibTiff.Classic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SkiaSharp;
+using Syncfusion.DocIORenderer;
 using Syncfusion.EJ2.DocumentEditor;
+using Syncfusion.EJ2.SpellChecker;
+using Syncfusion.Pdf;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+using DocIOWordDocument = Syncfusion.DocIO.DLS.WordDocument;
+using Ej2FormatType = Syncfusion.EJ2.DocumentEditor.FormatType;
 using WDocument = Syncfusion.DocIO.DLS.WordDocument;
 using WFormatType = Syncfusion.DocIO.FormatType;
-using Syncfusion.EJ2.SpellChecker;
-using EJ2APIServices;
-using SkiaSharp;
-using BitMiracle.LibTiff.Classic;
-using Syncfusion.DocIORenderer;
-using Syncfusion.Pdf;
-using Syncfusion.DocIO;
-using DocIOWordDocument = Syncfusion.DocIO.DLS.WordDocument;
-using Ej2WordDocument = Syncfusion.EJ2.DocumentEditor.WordDocument;
-using Ej2FormatType = Syncfusion.EJ2.DocumentEditor.FormatType;
-
-using DocIOFormatType = Syncfusion.DocIO.FormatType;
-
-using Syncfusion.DocIORenderer;
-using Syncfusion.Pdf;
 
 namespace EJ2APIServices.Controllers
 {
     [Route("api/[controller]")]
     public class DocumentEditorController : Controller
     {
-        private readonly IWebHostEnvironment  _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         string path;
+        private static bool dictionariesInitialized = false;
 
-        public DocumentEditorController(IWebHostEnvironment  hostingEnvironment)
+        public DocumentEditorController(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
             path = Startup.path;
@@ -123,80 +116,80 @@ namespace EJ2APIServices.Controllers
         {
             if (args.IsMetafile)
             {
-            //MetaFile image conversion(EMF and WMF)
-            //You can write your own method definition for converting metafile to raster image using any third-party image converter.
-            args.ImageStream = ConvertMetafileToRasterImage(args.MetafileStream);
+                //MetaFile image conversion(EMF and WMF)
+                //You can write your own method definition for converting metafile to raster image using any third-party image converter.
+                args.ImageStream = ConvertMetafileToRasterImage(args.MetafileStream);
             }
             else
             {
-            //TIFF image conversion
-            args.ImageStream = TiffToPNG(args.MetafileStream);
+                //TIFF image conversion
+                args.ImageStream = TiffToPNG(args.MetafileStream);
 
             }
         }
 
         // Converting Tiff to Png image using Bitmiracle https://www.nuget.org/packages/BitMiracle.LibTiff.NET
-       private static MemoryStream TiffToPNG(Stream tiffStream)
+        private static MemoryStream TiffToPNG(Stream tiffStream)
         {
             MemoryStream imageStream = new MemoryStream();
             using (Tiff tif = Tiff.ClientOpen("in-memory", "r", tiffStream, new TiffStream()))
             {
-            // Find the width and height of the image
-            FieldValue[] value = tif.GetField(BitMiracle.LibTiff.Classic.TiffTag.IMAGEWIDTH);
-            int width = value[0].ToInt();
+                // Find the width and height of the image
+                FieldValue[] value = tif.GetField(BitMiracle.LibTiff.Classic.TiffTag.IMAGEWIDTH);
+                int width = value[0].ToInt();
 
-            value = tif.GetField(BitMiracle.LibTiff.Classic.TiffTag.IMAGELENGTH);
-            int height = value[0].ToInt();
+                value = tif.GetField(BitMiracle.LibTiff.Classic.TiffTag.IMAGELENGTH);
+                int height = value[0].ToInt();
 
-            // Read the image into the memory buffer
-            int[] raster = new int[height * width];
-            if (!tif.ReadRGBAImage(width, height, raster))
-            {
-                throw new Exception("Could not read image");
-            }
-
-            // Create a bitmap image using SkiaSharp.
-            using (SKBitmap sKBitmap = new SKBitmap(width, height, SKImageInfo.PlatformColorType, SKAlphaType.Premul))
-            {
-                // Convert a RGBA value to byte array.
-                byte[] bitmapData = new byte[sKBitmap.RowBytes * sKBitmap.Height];
-                for (int y = 0; y < sKBitmap.Height; y++)
+                // Read the image into the memory buffer
+                int[] raster = new int[height * width];
+                if (!tif.ReadRGBAImage(width, height, raster))
                 {
-                    int rasterOffset = y * sKBitmap.Width;
-                    int bitsOffset = (sKBitmap.Height - y - 1) * sKBitmap.RowBytes;
+                    throw new Exception("Could not read image");
+                }
 
-                    for (int x = 0; x < sKBitmap.Width; x++)
+                // Create a bitmap image using SkiaSharp.
+                using (SKBitmap sKBitmap = new SKBitmap(width, height, SKImageInfo.PlatformColorType, SKAlphaType.Premul))
+                {
+                    // Convert a RGBA value to byte array.
+                    byte[] bitmapData = new byte[sKBitmap.RowBytes * sKBitmap.Height];
+                    for (int y = 0; y < sKBitmap.Height; y++)
                     {
-                        int rgba = raster[rasterOffset++];
-                        bitmapData[bitsOffset++] = (byte)((rgba >> 16) & 0xff);
-                        bitmapData[bitsOffset++] = (byte)((rgba >> 8) & 0xff);
-                        bitmapData[bitsOffset++] = (byte)(rgba & 0xff);
-                        bitmapData[bitsOffset++] = (byte)((rgba >> 24) & 0xff);
+                        int rasterOffset = y * sKBitmap.Width;
+                        int bitsOffset = (sKBitmap.Height - y - 1) * sKBitmap.RowBytes;
+
+                        for (int x = 0; x < sKBitmap.Width; x++)
+                        {
+                            int rgba = raster[rasterOffset++];
+                            bitmapData[bitsOffset++] = (byte)((rgba >> 16) & 0xff);
+                            bitmapData[bitsOffset++] = (byte)((rgba >> 8) & 0xff);
+                            bitmapData[bitsOffset++] = (byte)(rgba & 0xff);
+                            bitmapData[bitsOffset++] = (byte)((rgba >> 24) & 0xff);
+                        }
                     }
+
+                    // Convert a byte array to SKColor array.
+                    SKColor[] sKColor = new SKColor[bitmapData.Length / 4];
+                    int index = 0;
+                    for (int i = 0; i < bitmapData.Length; i++)
+                    {
+                        sKColor[index] = new SKColor(bitmapData[i + 2], bitmapData[i + 1], bitmapData[i], bitmapData[i + 3]);
+                        i += 3;
+                        index += 1;
+                    }
+
+                    // Set the SKColor array to SKBitmap.
+                    sKBitmap.Pixels = sKColor;
+
+                    // Save the SKBitmap to PNG image stream.
+                    sKBitmap.Encode(SKEncodedImageFormat.Png, 100).SaveTo(imageStream);
+                    imageStream.Flush();
                 }
-
-                // Convert a byte array to SKColor array.
-                SKColor[] sKColor = new SKColor[bitmapData.Length / 4];
-                int index = 0;
-                for (int i = 0; i < bitmapData.Length; i++)
-                {
-                    sKColor[index] = new SKColor(bitmapData[i + 2], bitmapData[i + 1], bitmapData[i], bitmapData[i + 3]);
-                    i += 3;
-                    index += 1;
-                }
-
-                // Set the SKColor array to SKBitmap.
-                sKBitmap.Pixels = sKColor;
-
-                // Save the SKBitmap to PNG image stream.
-                sKBitmap.Encode(SKEncodedImageFormat.Png, 100).SaveTo(imageStream);
-                imageStream.Flush();
-            }
             }
             return imageStream;
         }
 
-       private static Stream ConvertMetafileToRasterImage(Stream ImageStream)
+        private static Stream ConvertMetafileToRasterImage(Stream ImageStream)
         {
             //Here we are loading a default raster image as fallback.
             Stream imgStream = GetManifestResourceStream("ImageNotFound.jpg");
@@ -226,13 +219,29 @@ namespace EJ2APIServices.Controllers
         {
             try
             {
+                InitializeSpellCheckDictionaries();
+
                 SpellChecker spellCheck = new SpellChecker();
-                spellCheck.GetSuggestions(spellChecker.LanguageID, spellChecker.TexttoCheck, spellChecker.CheckSpelling, spellChecker.CheckSuggestion, spellChecker.AddWord);
-                return Newtonsoft.Json.JsonConvert.SerializeObject(spellCheck);
+
+                spellCheck.GetSuggestions(
+                    spellChecker.LanguageID,
+                    spellChecker.TexttoCheck,
+                    spellChecker.CheckSpelling,
+                    true,
+                    spellChecker.AddWord
+                );
+
+                return JsonConvert.SerializeObject(spellCheck);
             }
-            catch
+            catch (Exception ex)
             {
-                return "{\"SpellCollection\":[],\"HasSpellingError\":false,\"Suggestions\":null}";
+                return JsonConvert.SerializeObject(new
+                {
+                    SpellCollection = new object[] { },
+                    HasSpellingError = false,
+                    Suggestions = (object)null,
+                    Error = ex.ToString()
+                });
             }
         }
 
@@ -376,7 +385,7 @@ namespace EJ2APIServices.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("SystemClipboard")]
-        public string SystemClipboard([FromBody]CustomParameter param)
+        public string SystemClipboard([FromBody] CustomParameter param)
         {
             if (param.content != null && param.content != "")
             {
@@ -408,7 +417,7 @@ namespace EJ2APIServices.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("RestrictEditing")]
-        public string[] RestrictEditing([FromBody]CustomRestrictParameter param)
+        public string[] RestrictEditing([FromBody] CustomRestrictParameter param)
         {
             if (param.passwordBase64 == "" && param.passwordBase64 == null)
                 return null;
@@ -663,6 +672,45 @@ namespace EJ2APIServices.Controllers
             WDocument document = new WDocument(stream, WFormatType.Docx);
             stream.Dispose();
             return document;
+        }
+
+        private void InitializeSpellCheckDictionaries()
+        {
+            if (dictionariesInitialized)
+                return;
+
+            string dictionaryPath = Path.Combine(
+                _hostingEnvironment.ContentRootPath,
+                "App_Data"
+            );
+
+            string dicPath = Path.Combine(dictionaryPath, "en_US.dic");
+            string affPath = Path.Combine(dictionaryPath, "en_US.aff");
+            string customDicPath = Path.Combine(dictionaryPath, "customDict.dic");
+
+            if (!System.IO.File.Exists(dicPath))
+                throw new FileNotFoundException($"Missing dictionary file: {dicPath}", dicPath);
+
+            if (!System.IO.File.Exists(affPath))
+                throw new FileNotFoundException($"Missing affix file: {affPath}", affPath);
+
+            List<DictionaryData> spellDictCollection = new List<DictionaryData>
+            {
+                new DictionaryData
+                {
+                    LanguadeID = 1033,
+                    DictionaryPath = dicPath,
+                    AffixPath = affPath
+                }
+            };
+
+            SpellChecker.InitializeDictionaries(
+                spellDictCollection,
+                customDicPath,
+                1
+            );
+
+            dictionariesInitialized = true;
         }
     }
 }
