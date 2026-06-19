@@ -140,58 +140,103 @@ namespace EJ2APIServices_NET8.Controllers
 
         [HttpPost("Merge")]
         [RequestSizeLimit(200_000_000)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 200_000_000)]
         public async Task<IActionResult> Merge([FromForm] List<IFormFile> files)
         {
-            if (files == null || files.Count < 2)
+            try
             {
-                return BadRequest("Please upload at least two PDF files.");
-            }
-
-            using PdfDocument mergedDocument = new PdfDocument();
-
-            foreach (IFormFile file in files)
-            {
-                if (file.Length == 0)
+                if (files == null || files.Count < 2)
                 {
-                    continue;
+                    return BadRequest("Please upload at least two PDF files.");
                 }
 
-                if (!IsPdfFile(file))
+                using PdfDocument mergedDocument = new PdfDocument();
+
+                foreach (IFormFile file in files)
                 {
-                    return BadRequest($"Invalid file type: {file.FileName}");
+                    if (file == null || file.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    if (!file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return BadRequest($"Only PDF files are allowed. Invalid file: {file.FileName}");
+                    }
+
+                    await using Stream uploadedStream = file.OpenReadStream();
+                    using MemoryStream inputStream = new MemoryStream();
+
+                    await uploadedStream.CopyToAsync(inputStream);
+
+                    if (inputStream.Length == 0)
+                    {
+                        return BadRequest($"The file is empty: {file.FileName}");
+                    }
+
+                    inputStream.Position = 0;
+
+                    if (!LooksLikePdf(inputStream))
+                    {
+                        return BadRequest($"Invalid PDF file: {file.FileName}");
+                    }
+
+                    inputStream.Position = 0;
+
+                    using PdfLoadedDocument loadedDocument = new PdfLoadedDocument(inputStream);
+
+                    if (loadedDocument.IsEncrypted)
+                    {
+                        return BadRequest($"Password protected PDFs cannot be merged: {file.FileName}");
+                    }
+
+                    for (int pageIndex = 0; pageIndex < loadedDocument.Pages.Count; pageIndex++)
+                    {
+                        mergedDocument.ImportPage(loadedDocument, pageIndex);
+                    }
                 }
 
-                await using Stream uploadedStream = file.OpenReadStream();
-                using MemoryStream inputStream = new MemoryStream();
-
-                await uploadedStream.CopyToAsync(inputStream);
-                inputStream.Position = 0;
-
-                using PdfLoadedDocument loadedDocument = new PdfLoadedDocument(inputStream);
-
-                if (loadedDocument.Pages.Count > 0)
+                if (mergedDocument.Pages.Count == 0)
                 {
-                    mergedDocument.ImportPageRange(
-                        loadedDocument,
-                        0,
-                        loadedDocument.Pages.Count - 1
-                    );
+                    return BadRequest("No valid PDF pages were found to merge.");
                 }
+
+                using MemoryStream outputStream = new MemoryStream();
+                mergedDocument.Save(outputStream);
+
+                return File(
+                    outputStream.ToArray(),
+                    "application/pdf",
+                    "merged.pdf"
+                );
             }
-
-            if (mergedDocument.Pages.Count == 0)
+            catch (Exception ex)
             {
-                return BadRequest("No valid PDF pages were found.");
+                return StatusCode(500, new
+                {
+                    message = "PDF merge failed.",
+                    error = ex.Message,
+                    detail = ex.InnerException?.Message
+                });
+            }
+        }
+
+        private static bool LooksLikePdf(Stream stream)
+        {
+            if (!stream.CanSeek || stream.Length < 5)
+            {
+                return false;
             }
 
-            using MemoryStream outputStream = new MemoryStream();
-            mergedDocument.Save(outputStream);
+            long originalPosition = stream.Position;
 
-            return File(
-                outputStream.ToArray(),
-                "application/pdf",
-                "merged.pdf"
-            );
+            byte[] header = new byte[5];
+            stream.Read(header, 0, 5);
+
+            stream.Position = originalPosition;
+
+            string signature = System.Text.Encoding.ASCII.GetString(header);
+            return signature == "%PDF-";
         }
 
         [HttpPost("SaveEdited")]
