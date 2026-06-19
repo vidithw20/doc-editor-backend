@@ -143,6 +143,9 @@ namespace EJ2APIServices_NET8.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 200_000_000)]
         public async Task<IActionResult> Merge([FromForm] List<IFormFile> files)
         {
+            var sourceStreams = new List<MemoryStream>();
+            var sourceDocuments = new List<PdfLoadedDocument>();
+
             try
             {
                 if (files == null || files.Count < 2)
@@ -164,13 +167,14 @@ namespace EJ2APIServices_NET8.Controllers
                         return BadRequest($"Only PDF files are allowed. Invalid file: {file.FileName}");
                     }
 
-                    await using Stream uploadedStream = file.OpenReadStream();
-                    using MemoryStream inputStream = new MemoryStream();
+                    MemoryStream inputStream = new MemoryStream();
 
+                    await using Stream uploadedStream = file.OpenReadStream();
                     await uploadedStream.CopyToAsync(inputStream);
 
                     if (inputStream.Length == 0)
                     {
+                        inputStream.Dispose();
                         return BadRequest($"The file is empty: {file.FileName}");
                     }
 
@@ -178,17 +182,24 @@ namespace EJ2APIServices_NET8.Controllers
 
                     if (!LooksLikePdf(inputStream))
                     {
+                        inputStream.Dispose();
                         return BadRequest($"Invalid PDF file: {file.FileName}");
                     }
 
                     inputStream.Position = 0;
 
-                    using PdfLoadedDocument loadedDocument = new PdfLoadedDocument(inputStream);
+                    PdfLoadedDocument loadedDocument = new PdfLoadedDocument(inputStream);
 
                     if (loadedDocument.IsEncrypted)
                     {
+                        loadedDocument.Dispose();
+                        inputStream.Dispose();
+
                         return BadRequest($"Password protected PDFs cannot be merged: {file.FileName}");
                     }
+
+                    sourceStreams.Add(inputStream);
+                    sourceDocuments.Add(loadedDocument);
 
                     for (int pageIndex = 0; pageIndex < loadedDocument.Pages.Count; pageIndex++)
                     {
@@ -218,6 +229,18 @@ namespace EJ2APIServices_NET8.Controllers
                     error = ex.Message,
                     detail = ex.InnerException?.Message
                 });
+            }
+            finally
+            {
+                foreach (PdfLoadedDocument document in sourceDocuments)
+                {
+                    document.Dispose();
+                }
+
+                foreach (MemoryStream stream in sourceStreams)
+                {
+                    stream.Dispose();
+                }
             }
         }
 
