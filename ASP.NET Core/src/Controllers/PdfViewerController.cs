@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Syncfusion.EJ2.PdfViewer;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Parsing;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace EJ2APIServices_NET8.Controllers
 {
@@ -42,6 +44,7 @@ namespace EJ2APIServices_NET8.Controllers
                 if (isFileName)
                 {
                     string documentPath = GetDocumentPath(jsonData["document"]);
+
                     if (!string.IsNullOrEmpty(documentPath))
                     {
                         byte[] bytes = System.IO.File.ReadAllBytes(documentPath);
@@ -49,7 +52,7 @@ namespace EJ2APIServices_NET8.Controllers
                     }
                     else
                     {
-                        return Content(jsonData["document"] + " not found");
+                        return NotFound(jsonData["document"] + " not found");
                     }
                 }
                 else
@@ -135,6 +138,136 @@ namespace EJ2APIServices_NET8.Controllers
             return Content("Cache cleared");
         }
 
+        [HttpPost("Merge")]
+        [RequestSizeLimit(200_000_000)]
+        public async Task<IActionResult> Merge([FromForm] List<IFormFile> files)
+        {
+            if (files == null || files.Count < 2)
+            {
+                return BadRequest("Please upload at least two PDF files.");
+            }
+
+            using PdfDocument mergedDocument = new PdfDocument();
+
+            foreach (IFormFile file in files)
+            {
+                if (file.Length == 0)
+                {
+                    continue;
+                }
+
+                if (!IsPdfFile(file))
+                {
+                    return BadRequest($"Invalid file type: {file.FileName}");
+                }
+
+                await using Stream uploadedStream = file.OpenReadStream();
+                using MemoryStream inputStream = new MemoryStream();
+
+                await uploadedStream.CopyToAsync(inputStream);
+                inputStream.Position = 0;
+
+                using PdfLoadedDocument loadedDocument = new PdfLoadedDocument(inputStream);
+
+                if (loadedDocument.Pages.Count > 0)
+                {
+                    mergedDocument.ImportPageRange(
+                        loadedDocument,
+                        0,
+                        loadedDocument.Pages.Count - 1
+                    );
+                }
+            }
+
+            if (mergedDocument.Pages.Count == 0)
+            {
+                return BadRequest("No valid PDF pages were found.");
+            }
+
+            using MemoryStream outputStream = new MemoryStream();
+            mergedDocument.Save(outputStream);
+
+            return File(
+                outputStream.ToArray(),
+                "application/pdf",
+                "merged.pdf"
+            );
+        }
+
+        [HttpPost("SaveEdited")]
+        [RequestSizeLimit(200_000_000)]
+        public async Task<IActionResult> SaveEdited(
+            [FromForm] IFormFile file,
+            [FromForm] string fileName
+        )
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No PDF file was uploaded.");
+            }
+
+            if (!IsPdfFile(file))
+            {
+                return BadRequest("Only PDF files are allowed.");
+            }
+
+            string safeFileName = Path.GetFileName(
+                string.IsNullOrWhiteSpace(fileName)
+                    ? file.FileName
+                    : fileName
+            );
+
+            if (string.IsNullOrWhiteSpace(safeFileName))
+            {
+                safeFileName = "edited.pdf";
+            }
+
+            if (!safeFileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+            {
+                safeFileName += ".pdf";
+            }
+
+            string dataFolder = Path.Combine(_hostingEnvironment.ContentRootPath, "Data");
+            Directory.CreateDirectory(dataFolder);
+
+            string outputPath = Path.Combine(dataFolder, safeFileName);
+
+            await using FileStream outputStream = new FileStream(
+                outputPath,
+                FileMode.Create,
+                FileAccess.Write
+            );
+
+            await file.CopyToAsync(outputStream);
+
+            return Ok(new
+            {
+                message = "PDF saved successfully.",
+                fileName = safeFileName
+            });
+        }
+
+        private static bool IsPdfFile(IFormFile file)
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            bool hasPdfExtension = file.FileName.EndsWith(
+                ".pdf",
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            bool hasPdfContentType = string.Equals(
+                file.ContentType,
+                "application/pdf",
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            return hasPdfExtension || hasPdfContentType;
+        }
+
         private static Dictionary<string, string> ToStringDictionary(JsonElement jsonObject)
         {
             var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -162,22 +295,22 @@ namespace EJ2APIServices_NET8.Controllers
 
         private string GetDocumentPath(string document)
         {
-            string documentPath = string.Empty;
-
-            if (!System.IO.File.Exists(document))
+            if (string.IsNullOrWhiteSpace(document))
             {
-                var path = _hostingEnvironment.ContentRootPath;
-                if (System.IO.File.Exists(Path.Combine(path, "Data", document)))
-                {
-                    documentPath = Path.Combine(path, "Data", document);
-                }
-            }
-            else
-            {
-                documentPath = document;
+                return string.Empty;
             }
 
-            return documentPath;
+            string safeFileName = Path.GetFileName(document);
+
+            string dataFolder = Path.Combine(_hostingEnvironment.ContentRootPath, "Data");
+            string documentPath = Path.Combine(dataFolder, safeFileName);
+
+            if (System.IO.File.Exists(documentPath))
+            {
+                return documentPath;
+            }
+
+            return string.Empty;
         }
     }
 }
